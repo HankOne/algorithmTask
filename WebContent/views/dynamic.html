@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>动态规划</title>
+		<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+		<style>
+			body{
+				background: url(../img/5-13050G33A6.jpg);
+				margin: 0 auto;
+			}
+		</style>
+		<script>
+			function tanxin() {
+				var num = parseInt(prompt("输入顾客人数"));
+				var arr = [];
+				for (var i = 0; i < num; i++) {
+					var index = i + 1;
+					arr[i] = parseInt(prompt("输入第" + index + "个顾客所需服务时间"));
+				}
+				var surTime = "";
+				for (var i = 0; i < num; i++) {
+					surTime += arr[i] + " ";
+				}
+				document.getElementById("surTime").value = surTime;
+				//将服务时间按从小到大排序
+				for (var i = 0; i < num - 1; i++) {
+					for (var j = 0; j < num - i - 1; j++) {
+						if (arr[j] > arr[j + 1]) {
+							var temp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = temp;
+						}
+					}
+				}
+				var ans = 0;
+				console.log("等待时间：");
+				for (var i = 0; i < num; i++) {
+					var tep = (num - i) * arr[i];
+					console.log(tep);
+					ans = ans + (num - i) * arr[i];
+				}
+				console.log(ans * 1.0 / num);
+				document.getElementById("ans").value = ans * 1.0 / num;
+				var t = document.getElementById("t");
+				for (var i = 0; i < 1; i++) {
+					var r = t.insertRow();
+					for (var j = 0; j < num; j++) {
+						var c = r.insertCell();
+						c.innerHTML = arr[j];
+					}
+				}
+			}
+
+			function dp() {
+				var arr = [];
+				var num = parseInt(prompt("输入数组长度"));
+				for (var i = 0; i < num; i++) {
+					var index = i + 1;
+					arr[i] = parseInt(prompt("输入第" + index + "个元素"));
+				}
+				console.log(arr);
+				
+				var ans3="";
+				for(var i=0;i<num;i++){
+					ans3+=arr[i]+" ";
+				}
+				document.getElementById("dpans3").value = ans3;
+				var max = Number.MIN_VALUE;
+				var cur = 0;
+				var begin = 0;
+				var end = 0;
+				for (var i = 0; i != arr.length; i++) {
+					if (cur == 0)
+						begin = i;
+					cur += arr[i];
+					max = Math.max(max, cur);
+					cur = cur < 0 ? 0 : cur;
+				}
+				var sum = 0;
+				for (var i = begin; i < num; i++) {
+					sum += arr[i];
+					if (sum == max)
+						end = i;
+				}
+				console.log(max);
+				console.log("开始" + begin + "结束：" + end);
+				document.getElementById("dpans1").value = max;
+				var dpans2 = "";
+				for (var i = begin; i <= end; i++) {
+					dpans2 += arr[i] + " ";
+				}
+				document.getElementById("dpans2").value = dpans2;
+				
+				
+				
+				
+				var t = document.getElementById("t2");
+				for (var i = 0; i < 1; i++) {
+					var r = t.insertRow();
+					for (var j = 0; j < num; j++) {
+						var c = r.insertCell();
+						c.innerHTML = arr[j];
+					}
+				}
+				/*var b = [];
+				for (var j = 0; j < num; j++) {
+					b[j + 1] = arr[j];
+				}
+				var sum = 0;
+				var x = 0;
+				for (var i = 1; i <= num; i++) {
+					if (x > 0)
+						x = x + b[i];
+					else
+						x = b[i];
+					if (x > sum) sum = x;
+				}
+				console.log(sum);
+				document.getElementById("dpans").value = sum;*/
+			}
+
+		</script>
+	</head>
+	<style>
+		/*#center {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-ms-transform: translate(-50%, -50%);
+			-moz-transform: translate(-50%, -50%);
+			-o-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+		}*/
+	</style>
+
+	<body>
+		<div class="nav">
+			<div class="nav_text">
+				<p><b>算法设计与分析</b></p>
+				<ul>
+					<li><a href="#">递归</a></li>
+					<li><a href="#">动态规划</a></li>
+					<li><a href="#">贪心</a></li>
+					<li><a href="#">回溯</a></li>
+					<li><a href="#">分支限界</a></li>
+				</ul>		
+			</div>
+		</div>
+		
+		<div class="wrap_wrap">
+			<div class="wrap">		
+				<div id="center">
+					<div class="up_txt">
+						<h1>dynamic programming</h1>
+						<input type="button" class="btn btn-default" value="动态规划" onclick="dp();" />
+					</div>
+					
+					<br/>序列：<br />
+					<input type="text" class="form-control" id="dpans3" value="" disabled="disabled" /><br /><br /> 最优值最大子段长度：
+					<input type="text" class="form-control" id="dpans1" value="" disabled="disabled" /><br /><br /> 最优解：
+					<input type="text" class="form-control" id="dpans2" value="" disabled="disabled" />
+		
+				</div>
+			</div>
+		</div>
+		
+
+	</body>
+
+</html>

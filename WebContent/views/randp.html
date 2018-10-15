@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>r and p</title>
+		<style>
+			body{
+				background-image: url(../img/5-13050GT131.jpg);
+				margin: 0 auto;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+	</head>
+	<body>
+		<div class="nav">
+			<div class="nav_text">
+				<p><b>算法设计与分析</b></p>
+				<ul>
+					<li><a href="#">递归</a></li>
+					<li><a href="#">动态规划</a></li>
+					<li><a href="#">贪心</a></li>
+					<li><a href="#">回溯</a></li>
+					<li><a href="#">分支限界</a></li>
+				</ul>		
+			</div>
+		</div>
+		
+		<div class="wrap_wrap">
+			<div class="wrap">
+				<div id="center">
+					<div class="up_txt">
+						<h1>recursion and partition</h1>
+						<input type="button" class="btn btn-default" id="btn" value="点击获得答案"/>
+					</div>
+					
+					 <br/>n个集合:
+					<input type="text" class="form-control" id="getN" value=""/>
+					<br />划分为m个非空子集：
+					<input type="text" class="form-control" id="getM" value=""/>
+					<br />总共可以划分成个数：
+					<input type="text" class="form-control" id="ans" value="" disabled="disabled" />
+				</div>
+			</div>
+		</div>
+		
+		
+		<script>
+			var btn = document.getElementById('btn')
+			btn.addEventListener('click', function(){
+				function divideSet(n, m) {
+					//两种极端的情况
+					if ((m > n) ||(m == 0))
+					{
+						return 0;
+					}
+					else if ((m == 1)||(n==1)||(m == n))
+					{
+				        //只有一种划分情况了
+						return 1;
+					}
+					else
+					{
+					    //递归，直到出现(m == 1)||(n==1)||(m == n)的情况
+						return (divideSet(n-1, m-1) + m*divideSet(n-1, m));
+						/*
+						对于最后一个元素有两种情况:
+						        一种是独立组成一个集合，另一种是和别的元素混在一起。
+						        对于第一种情况，等价于把前n-1个元素分成m-1份，然后n号元素单独放。
+						        对于第二种情况，等价于把前n-1个元素分成m份，然后把n号元素放入这m个集合中的一个（有m种放法）
+						        总数就是*/
+					}
+				}
+				var n = document.getElementById('getN').value
+				var m = document.getElementById('getM').value
+				var answer = divideSet(n, m)
+//				console.log(answer)
+				var ans = document.getElementById('ans')
+				ans.disabled = false
+				ans.value = answer
+			},false)
+		</script>
+	</body>
+</html>

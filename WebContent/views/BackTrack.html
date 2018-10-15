@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>backTrack</title>
+		<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+		<style>
+			body{
+				background: url(../img/5-13050GT138.jpg);
+				margin: 0 auto;
+			}
+			.wrap{
+				width: 90%;
+				background-color: white;
+				height: 570px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.wrap_wrap{
+				padding-top: 25px;
+				margin-top: 100px;
+				margin-left: auto;
+				margin-right: auto;
+				width: 70%;
+				height: 620px;
+				background-color: #FFFFFF;
+				border-radius: 25px;
+				margin-bottom: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap_wrap">
+			<div class="wrap">
+				<div id="center">
+					<div class="up_txt">
+						<h1>Back Tracking Method</h1>
+						<input type="button" class="btn btn-default" value="点击获得答案" id="btn" />
+					</div>
+					
+					<br />部件数
+					<input type="text" class="form-control" name="" id="getN" />
+					<br />供应商数
+					<input type="text" class="form-control" name="" id="getM" />
+					<br />限定价格
+					<input type="text" class="form-control" name="" id="getCost" />
+					<br />各部件的在不同供应商的重量
+					<input type="text" class="form-control" id="input_txt_up" />
+					<br />各部件的在不同供应商的价格
+					<input type="text" class="form-control" id="input_txt_down" />
+					
+					<br />所有部件的最小重量
+					<input type="text" class="form-control" name="" id="answer_up" disabled="disabled" />
+					<br />每个部件的供应商
+					<input type="text" class="form-control" name="" id="answer_down" disabled="disabled" />
+					 
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			var btn = document.getElementById('btn')
+			btn.onclick = function() {
+				var n = document.getElementById('getN').value
+				var m = document.getElementById('getM').value
+				var cost = document.getElementById('getCost').value
+				
+//				console.log(n)
+//				console.log(m)
+//				console.log(cost)
+				
+				var txtUp = document.getElementById('input_txt_up').value
+				ssUp = txtUp.split(",")
+				console.log(ssUp[0])
+				var txtDown = document.getElementById('input_txt_down').value
+				ssDown = txtDown.split(",")
+				console.log(ssDown[0])
+				
+				var k = 0, p = 0
+				var firstArr = new Array()
+				var secondArr  =new Array()
+				
+				for(var i = 1; i <= n; i++){
+					firstArr[i] = new Array()
+					for(var j = 1; j <= n; j++){
+						firstArr[i][j] = parseInt(ssUp[k])
+						k++
+					}
+				}
+				console.log(firstArr)
+				for(var i = 1; i <= n; i++){
+					secondArr[i] = new Array()
+					for(var j = 1; j <= n; j++){
+						secondArr[i][j] = parseInt(ssDown[p])
+						p++
+					}
+				}
+				console.log(secondArr)
+				
+				
+				
+				
+				var data = new Object()
+				data.bestw = 1000
+				data.cc = 0
+				data.cw = 0
+				data.x = new Array()
+				data.bestx = new Array()
+				
+				function backTrack(t,obj,firstArr,secondArr,cost,m,n){
+//					obj.cw = parseInt(obj.cw)
+//					obj.cc = parseInt(obj.cc)
+//					obj.bestw = parseInt(obj.bestw)
+//					console.log(data.cw)
+					var q
+				    if(t>n)//搜索到叶子结点，一个搜索结束，所有零件已经找完
+				    {
+				        obj.bestw=obj.cw//当前最小重量
+				        for(q=1;q<=n;q++)
+				            obj.bestx[q]=obj.x[q]
+				    }
+				    else
+				    {
+				        for(q=1;q<=m;q++)
+				        {
+				            if(((obj.cc+secondArr[t][q])<=cost) && ((obj.cw+firstArr[t][q])<obj.bestw))
+				            {
+				                obj.x[t]=q
+				                obj.cc+=secondArr[t][q]
+				                obj.cw+=firstArr[t][q]
+				                backTrack(t+1,data,firstArr,secondArr, cost,m ,n)
+				                obj.cc-=secondArr[t][q]
+				                obj.cw-=firstArr[t][q]
+				            }
+				        }
+				    }
+				}
+			    backTrack(1,data,firstArr,secondArr, cost,m ,n)
+			    
+			    var answerUp = document.getElementById('answer_up')
+			    var answerDown = document.getElementById('answer_down')
+			    
+			    answerUp.value = data.bestw
+			    var ansStr = ''
+			    for(var r = 1; r < data.bestx.length; r++){
+			    	ansStr = ansStr + ' ' + data.bestx[r]
+			    }
+			    answerDown.value = ansStr
+			    
+//			    answerUp.disabled = false
+//			    answerDown.disabled = false
+			    
+			    //console.log(data)
+
+//				
+			}
+		</script>
+	</body>
+</html>
+<!--1,2,3,3,2,1,2,2,2-->
